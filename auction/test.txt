@@ -1,0 +1,48 @@
+--查看某用户竞得的物品 （商品名称，种类名称，赢取价格，商品标注）
+select i.item_name,k.kind_name,i.max_price,i.item_remark 
+from item i,bid b,kind k where i.item_id=b.item_id and 
+i.kind_id=k.kind_id and i.winer_id=1;
+
+--浏览流拍物品  （商品名称，种类名称，商品价格，商品标注）
+select item_name,kind_name,max_price,item_remark 
+from item,kind where item.kind_id=kind.kind_id and state_id=3;
+
+--查看自己的竞标  （商品名称，竞拍价格，竞拍时间，用户名）
+select item_name,bid_price,bid_date,username 
+from bid,item,auction_user 
+where auction_user.user_id=1 
+and item.item_id=bid.item_id 
+and bid.user_id=auction_user.user_id;
+
+--添加新种类
+insert into kind (kind_name,kind_desc) 
+values('汽车','便宜的汽车');
+
+--添加新物品
+insert into item (item_name,item_remark,item_desc,kind_id,addtime,
+	endtime,init_price,max_price,owner_id,winer_id,state_id) 
+values('奥迪A6','好车','好车','3','2010-5-20',
+	'2010-5-26',200000,200000,1,null,1)
+
+--浏览拍卖物品
+select kind_id,kind_name from kind;
+
+--按种类浏览拍卖物品  （商品名称，上架时间，当前拍卖的最高价格，用户名，商品标注）
+select item_name,addtime,max_price,username,item_remark
+from item,auction_user
+where item.owner_id=auction_user.user_id 
+and state_id=1 and kind_id=3;
+
+--管理种类
+insert into kind (kind_name,kind_desc) values('家电','家电家电家电');
+--管理物品
+insert into item (item_name,item_remark,item_desc,kind_id,addtime,endtime,
+			init_price,max_price,owner_id,winer_id,state_id)
+values('家电abc','家电abc家电abc','家电abc家电abc家电abc',4,'2012-5-30','2012-6-3'
+	,1000,1000,1,null,1);
+
+--竞价
+insert into bid (user_id,item_id,bid_price,bid_date) 
+values(1,5,1200,'2012-05-31');
+--更新物品的最高价
+update item set max_price=1200 where item_id=5;
